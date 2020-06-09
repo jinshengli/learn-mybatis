@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--连接数据库-->
+    <properties resource="database.properties"/>
+
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"></setting>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- Allows JDBC support for generated keys. A compatible driver is required.
+        This setting forces generated keys to be used if set to true,
+         as some drivers deny compatibility but still work -->
+        <setting name="useGeneratedKeys" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="com.ljs.entity.Student" alias="student"></typeAlias>
+    </typeAliases>
+
+    <environments default="dev">
+        <!--环境变量：连接数据库-->
+        <environment id="dev">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 加载映射文件 mapper -->
+    <mappers>
+
+        <mapper resource="mapper/StudentDao.xml"></mapper>
+
+    </mappers>
+
+
+</configuration>
