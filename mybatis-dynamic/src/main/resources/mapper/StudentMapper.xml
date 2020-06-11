@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.ljs.dao.StudentMapper">
+
+
+    <sql id="studentColumn">
+        SELECT id, name, age
+    </sql>
+
+    <select id="findStudentByIf" resultType="student">
+        <include refid="studentColumn"/>
+        FROM student
+        WHERE 1 = 1
+        <if test="name != null">
+            and name = #{name}
+        </if>
+    </select>
+
+    <select id="findStudentByObject" parameterType="student" resultType="student">
+
+        SELECT *
+        FROM student
+        <where>
+            <if test="student.id != null">
+               id = #{student.id}
+            </if>
+
+            <if test="student.name != null ">
+                OR name = #{student.name}
+            </if>
+
+            <if test="student.age != null">
+                OR age = #{student.age}
+            </if>
+        </where>
+    </select>
+
+    <select id="findStudentByObject1" resultType="student">
+        SELECT *
+        FROM student
+        <where>
+            <if test="id != null">
+                OR id = #{id}
+            </if>
+            <if test="name != null">
+                OR name = #{name}
+            </if>
+            <if test="age != null">
+                OR age &lt; #{age}
+            </if>
+        </where>
+    </select>
+
+    <select id="findStudentByIds" resultType="student">
+        SELECT *
+        FROM student
+        <where>
+            <if test="ids.size() > 0 ">
+                id IN
+                <foreach collection="ids" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="findStudentByIds01" resultType="student">
+        SELECT *
+        FROM student
+        <if test="list != null and list.size() > 0 ">
+            WHERE id IN
+            <foreach collection="list" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findStudentByIds02" resultType="student">
+        SELECT *
+        FROM student
+        <where>
+            <if test="array!=null and array.length>0">
+                id IN
+                <foreach collection="array" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="toStudentDemo" type="com.ljs.entity.StudentDemo">
+        <id column="id" property="stuId"/>
+        <result property="nameS" column="name"/>
+        <result property="ages" column="age"/>
+    </resultMap>
+
+    <select id="getStudentDemo" resultMap="toStudentDemo">
+        SELECT *
+        FROM student
+    </select>
+
+</mapper>

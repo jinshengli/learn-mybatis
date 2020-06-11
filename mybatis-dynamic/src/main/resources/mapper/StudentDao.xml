@@ -5,8 +5,10 @@
 
 <mapper namespace="com.ljs.dao.StudentDao">
 
+
+
     <select id="findAllStudent" resultType="student">
-        select * from student
+        select * from student where name like #{name}
     </select>
 
     <select id="findStudentById" resultType="student">
@@ -28,5 +30,27 @@
         from student
         where `id` = #{id}
     </delete>
+
+    <select id="findStudentByIdOrName" resultType="student">
+        SELECT *
+        FROM student
+        WHERE `id` = #{id} or `name` = #{name}
+    </select>
+
+
+    <select id="findStudentByNameOrAge" resultType="student">
+        SELECT *
+        FROM student
+        WHERE `name` = #{arg0} or `age` = #{arg1}
+    </select>
+
+    <select id="findStudentByMap" resultType="student" parameterType="map">
+        SELECT *
+        FROM student
+        WHERE `id` = #{idd} or `name` = #{namee} or `age` = #{agee}
+    </select>
+
+
+
 
 </mapper>
